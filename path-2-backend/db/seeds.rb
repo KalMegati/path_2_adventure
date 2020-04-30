@@ -5,3 +5,18 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+require 'faker'
+require 'securerandom'
+ 
+Character.delete_all
+Player.delete_all
+
+kal = Player.create(name: "Kal")
+
+adora = Character.create(name: "Adora", x_ancestry: "First One", x_background: "Soldier", x_class: "Champion", player: kal)
+
+glimmer = Character.create(name: "Glimmer", x_ancestry: "Immortal", x_background: "Noble", x_class: "Sorcerer", player: kal)
+
+bow = Character.create(name: "Bow", x_ancestry: "Human", x_background: "Scholar", x_class: "Ranger", player: kal)
+

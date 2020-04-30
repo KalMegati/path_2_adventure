@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ancestry: MyString
+  background: MyString
+  class: MyString
+  player: one
+
+two:
+  ancestry: MyString
+  background: MyString
+  class: MyString
+  player: two
