@@ -10,7 +10,11 @@ class PlayersController < ApplicationController
         player = Player.new(
             name: player_params[:name]
         )
-        player.save
+        if player.save
+            render json: player, include: :characters 
+        else
+            render json: {some: "#{player.errors.messages.keys.last} #{player.errors.messages.values.last.last}"}, status: 501
+        end
     end
 
     private

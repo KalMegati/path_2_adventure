@@ -7,6 +7,13 @@ document.addEventListener("DOMContentLoaded", function() {
     gettoDaze();
 });
 
+
+
+populateSelection(
+    Object.keys(ancestries),
+    document.getElementById("new-character-ancestry")
+),
+
 function gettoDaze() {
     fetch(PLAYERS_URL)
     .then(function(response) {
@@ -19,24 +26,36 @@ function gettoDaze() {
     });
 };
 
+function populateSelection(myArr, myNode) {
+    for (const choice of myArr) {
+        let option = document.createElement("option");
+            option.value = choice;
+            option.textContent = choice;
+        myNode.appendChild(option);
+    };
+};
+
 function playerCard(player) {
     let div = document.createElement("div");
         div.classList.add("card");
         div.setAttribute("data-id", player.id);
+        
     let p = document.createElement("p");
         p.textContent = player.name;
+
     let ul = document.createElement("ul");
     for (let character of player.characters) {
         let li = document.createElement("li");
             li.textContent = `${character.name} ~ ${character.x_ancestry} ${character.x_class}`;
         ul.appendChild(li);    
     };
+
     div.appendChild(p);  
     div.appendChild(ul);
     main.appendChild(div);
 };
 
-// returns navArr as an array of html documents
+// returns ancestries, backgrounds, and classes as dict of option links
 
 let heroUrl = 'https://cors-anywhere.herokuapp.com/'
 const ancestriesUrl = "https://2e.aonprd.com/Ancestries.aspx"
@@ -73,7 +92,9 @@ dommer(heroUrl, classesUrl, listFiller, clasFunc, classes);
 
 let newPlayer = document.getElementById("new-player");
 
-let spitter = () => addPlayer(newPlayer.value)
+let clickPlayer = () => {
+    return (newPlayer ? addPlayer(newPlayer.value) : alert("cannot be nameless"));
+    };
 
 function addPlayer(name) {
     let formData = {
@@ -91,13 +112,16 @@ function addPlayer(name) {
 
     fetch("http://localhost:3000/players", configObj)
     .then(function(response) {
-        fetch(PLAYERS_URL)
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(json) {
-            playerCard(json[json.length-1])
-        });
+        return response.json();
     })
+    .then(function(json) {
+        if (json.id) {
+            playerCard(json);
+        } else {
+            alert(json.some);
+        };
+    });
 
 };
+
+//
