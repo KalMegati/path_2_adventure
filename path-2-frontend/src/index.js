@@ -124,6 +124,14 @@ function addPlayer(name) {
         if (json.id) {
             playerCard(json);
             players.push(json);
+
+            let option = document.createElement("option");
+                option.value = json.name;
+                option.textContent = json.name;
+    
+            let playerSelect = document.getElementById("new-character-player");
+                playerSelect.appendChild(option);
+
         } else {
             alert(json.some);
         };
@@ -185,5 +193,6 @@ function characterCard(character) {
         li.textContent = `${character.name} ~ ${character.x_ancestry} ${character.x_class}`;
 
     let ul = document.getElementsByClassName(`player ${character.player_id}`)[0].getElementsByTagName("ul")[0];
-        ul.appendChild(li);    
+        ul.appendChild(li);
+
 };
