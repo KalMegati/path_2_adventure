@@ -4,17 +4,21 @@ const PLAYERS_URL = `${BASE_URL}/players`
 const main = document.querySelector("main");
 
 document.addEventListener("DOMContentLoaded", function() {
-    gettoDaze();
+    gettoDaze(players);
+    console.log(Object.keys(ancestries));
+    setTimeout(function(){ 
+
+        populateSelection(players.map(player => player.name), document.getElementById("new-character-player"));
+        populateSelection(Object.keys(ancestries), document.getElementById("new-character-ancestry"));
+        populateSelection(Object.keys(backgrounds), document.getElementById("new-character-background"));
+        populateSelection(Object.keys(classes), document.getElementById("new-character-class"));
+    
+    }, 1000);
 });
 
 
 
-populateSelection(
-    Object.keys(ancestries),
-    document.getElementById("new-character-ancestry")
-),
-
-function gettoDaze() {
+function gettoDaze(myArr) {
     fetch(PLAYERS_URL)
     .then(function(response) {
         return response.json();
@@ -22,6 +26,7 @@ function gettoDaze() {
     .then(function(json) {
         for (let player of json) {
             playerCard(player);
+            myArr.push(player)
         };
     });
 };
@@ -37,8 +42,8 @@ function populateSelection(myArr, myNode) {
 
 function playerCard(player) {
     let div = document.createElement("div");
-        div.classList.add("card");
-        div.setAttribute("data-id", player.id);
+        div.classList.add("player");
+        div.classList.add(`${player.id}`);
         
     let p = document.createElement("p");
         p.textContent = player.name;
@@ -83,6 +88,7 @@ let clasFunc = (myDom) => Array.from(myDom.getElementsByTagName("h1")[1].getElem
 let ancestries = {};
 let backgrounds = {};
 let classes = {};
+let players = [];
 
 dommer(heroUrl, ancestriesUrl, listFiller, anceFunc, ancestries);
 dommer(heroUrl, backgroundsUrl, listFiller, backFunc, backgrounds);
@@ -94,7 +100,7 @@ let newPlayer = document.getElementById("new-player");
 
 let clickPlayer = () => {
     return (newPlayer ? addPlayer(newPlayer.value) : alert("cannot be nameless"));
-    };
+};
 
 function addPlayer(name) {
     let formData = {
@@ -117,6 +123,7 @@ function addPlayer(name) {
     .then(function(json) {
         if (json.id) {
             playerCard(json);
+            players.push(json);
         } else {
             alert(json.some);
         };
@@ -125,3 +132,58 @@ function addPlayer(name) {
 };
 
 //
+
+let newCharacter = document.getElementById("new-character");
+
+let clickCharacter = () => {
+    return addCharacter(newCharacter.value);
+};
+
+const wild = []
+
+function addCharacter(name) {
+    let formData = {
+        name: name,
+        x_ancestry: document.getElementById("new-character-ancestry").value,
+        x_background: document.getElementById("new-character-background").value,
+        x_class: document.getElementById("new-character-class").value,
+        player: document.getElementById("new-character-player").value
+    };
+       
+    let configObj = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(formData)
+    };
+
+    fetch("http://localhost:3000/characters", configObj)
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(json) {
+        wild.push(json);
+        characterCard(json);
+        // if (json.id) {
+        //     playerCard(json);
+        //     players.push(json);
+        // } else {
+        //     alert(json.some);
+        // };
+    });
+
+};
+
+function characterCard(character) {
+    let div = document.createElement("div");
+        div.classList.add("character");
+        div.classList.add(`${character.id}`);
+
+    let li = document.createElement("li");
+        li.textContent = `${character.name} ~ ${character.x_ancestry} ${character.x_class}`;
+
+    let ul = document.getElementsByClassName(`player ${character.player_id}`)[0].getElementsByTagName("ul")[0];
+        ul.appendChild(li);    
+};
