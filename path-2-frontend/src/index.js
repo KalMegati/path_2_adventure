@@ -5,7 +5,6 @@ const main = document.querySelector("main");
 
 document.addEventListener("DOMContentLoaded", function() {
     gettoDaze(players);
-    console.log(Object.keys(ancestries));
     setTimeout(function(){ 
 
         populateSelection(players.map(player => player.name), document.getElementById("new-character-player"));
@@ -40,6 +39,33 @@ function populateSelection(myArr, myNode) {
     };
 };
 
+function destroyCharacter(character_id) {
+    console.log(character_id);
+ 
+    let formData = {
+
+    };
+       
+    let configObj = {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(formData)
+    };
+
+    fetch(`http://localhost:3000/characters/${character_id}`, configObj)
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(json) {
+        let sacrifice = document.getElementsByClassName(`character ${json}`)[0];
+        sacrifice.remove();
+    });
+
+};
+
 function playerCard(player) {
     let div = document.createElement("div");
         div.classList.add("player");
@@ -50,9 +76,17 @@ function playerCard(player) {
 
     let ul = document.createElement("ul");
     for (let character of player.characters) {
+        let button = document.createElement("button");
+            button.textContent = "delete";
+            button.setAttribute("onclick", `destroyCharacter(${character.id})`);
+
         let li = document.createElement("li");
             li.textContent = `${character.name} ~ ${character.x_ancestry} ${character.x_class}`;
-        ul.appendChild(li);    
+            li.classList.add("character");
+            li.classList.add(`${character.id}`);
+            li.appendChild(button);
+
+        ul.appendChild(li);
     };
 
     div.appendChild(p);  
@@ -185,12 +219,16 @@ function addCharacter(name) {
 };
 
 function characterCard(character) {
-    let div = document.createElement("div");
-        div.classList.add("character");
-        div.classList.add(`${character.id}`);
+
+    let button = document.createElement("button");
+        button.textContent = "delete";
+        button.setAttribute("onclick", `destroyCharacter(${character.id})`);
 
     let li = document.createElement("li");
         li.textContent = `${character.name} ~ ${character.x_ancestry} ${character.x_class}`;
+        li.classList.add("character");
+        li.classList.add(`${character.id}`);
+        li.appendChild(button);
 
     let ul = document.getElementsByClassName(`player ${character.player_id}`)[0].getElementsByTagName("ul")[0];
         ul.appendChild(li);

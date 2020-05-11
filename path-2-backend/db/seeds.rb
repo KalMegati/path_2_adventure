@@ -11,11 +11,12 @@ require 'securerandom'
 Character.delete_all
 Player.delete_all
 
-kal = Player.create(name: "Kal")
+noelle = Player.create(name: "Noelle")
 
-adora = Character.create(name: "Adora", x_ancestry: "First One", x_background: "Soldier", x_class: "Champion", player: kal)
+adora = Character.create(name: "Adora", x_ancestry: "Elf", x_background: "Soldier", x_class: "Fighter", player: noelle)
 
-glimmer = Character.create(name: "Glimmer", x_ancestry: "Immortal", x_background: "Noble", x_class: "Sorcerer", player: kal)
+glimmer = Character.create(name: "Glimmer", x_ancestry: "Half-Elf", x_background: "Noble", x_class: "Sorcerer", player: noelle)
 
-bow = Character.create(name: "Bow", x_ancestry: "Human", x_background: "Scholar", x_class: "Ranger", player: kal)
+bow = Character.create(name: "Bow", x_ancestry: "Human", x_background: "Scholar", x_class: "Ranger", player: noelle)
 
+aj = Player.create(name: "AJ")
