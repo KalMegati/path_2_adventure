@@ -11,8 +11,8 @@ document.addEventListener("DOMContentLoaded", function() {
         populateSelection(Object.keys(ancestries), document.getElementById("new-character-ancestry"));
         populateSelection(Object.keys(backgrounds), document.getElementById("new-character-background"));
         populateSelection(Object.keys(classes), document.getElementById("new-character-class"));
-    
-    }, 1000);
+        alert(backgrounds[0])
+    }, 3000);
 });
 
 
@@ -207,7 +207,8 @@ function addCharacter(name) {
     })
     .then(function(json) {
         wild.push(json);
-        characterCard(json);
+        let character = new Character(json);
+        character.characterCard()
         // if (json.id) {
         //     playerCard(json);
         //     players.push(json);
@@ -234,5 +235,3 @@ function addCharacter(name) {
 //         ul.appendChild(li);
 
 // };
-
-let level = 25
