@@ -1,7 +1,6 @@
 class CharactersController < ApplicationController
 
     def create
-
         character = Character.new(
             name: character_params[:name], 
             x_ancestry: character_params[:x_ancestry], 
@@ -28,7 +27,7 @@ class CharactersController < ApplicationController
     private
 
     def character_params
-        params.permit(:name, :x_ancestry, :x_background, :x_class, :player)
+        params.require(:character).permit(:name, :x_ancestry, :x_background, :x_class, :player)
     end
 
 end

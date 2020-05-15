@@ -3,16 +3,36 @@ const BASE_URL = "http://localhost:3000"
 const PLAYERS_URL = `${BASE_URL}/players`
 const main = document.querySelector("main");
 
-document.addEventListener("DOMContentLoaded", function() {
-    gettoDaze(players);
-    setTimeout(function(){ 
+// let ancestries = {};
+// let backgrounds = {};
+// let classes = {};
 
+let ancestries = ["Dwarf", "Elf", "Gnome", "Goblin", "Halfling", "Human"];
+let backgrounds = ["Acolyte", "Acrobat", "Animal Whisperer", "Artisan", "Artist", "Barkeep", "Barrister", "Bounty Hunter", "Charlatan", "Criminal", "Detective", "Emissary", "Entertainer", "Farmhand", "Field Medic", "Fortune Teller", "Gambler", "Gladiator", "Guard", "Herbalist", "Hermit", "Hunter", "Laborer", "Martial Disciple", "Merchant", "Miner", "Noble", "Nomad", "Prisoner", "Raised by Belief", "Sailor", "Scholar", "Scout", "Street Urchin", "Tinker", "Warrior"];
+let classes = ["Alchemist", "Barbarian", "Bard", "Champion", "Cleric", "Druid", "Fighter", "Monk", "Ranger", "Rogue", "Sorcerer", "Wizard"]
+let players = [];
+
+document.addEventListener("DOMContentLoaded", function() {
+    
+    gettoDaze(players);
+
+    setTimeout(function(){ 
         populateSelection(players.map(player => player.name), document.getElementById("new-character-player"));
-        populateSelection(Object.keys(ancestries), document.getElementById("new-character-ancestry"));
-        populateSelection(Object.keys(backgrounds), document.getElementById("new-character-background"));
-        populateSelection(Object.keys(classes), document.getElementById("new-character-class"));
-        alert(backgrounds[0])
-    }, 3000);
+        populateSelection(ancestries, document.getElementById("new-character-ancestry"));
+        populateSelection(backgrounds, document.getElementById("new-character-background"));
+        populateSelection(classes, document.getElementById("new-character-class"));
+    }, 1000);
+
+    // setTimeout(function(){ 
+    //     populateSelection(players.map(player => player.name), document.getElementById("new-character-player"));
+    //     populateSelection(Object.keys(ancestries), document.getElementById("new-character-ancestry"));
+    //     populateSelection(Object.keys(backgrounds), document.getElementById("new-character-background"));
+    //     console.log(classes);
+    //     populateSelection(Object.keys(classes), document.getElementById("new-character-class"));
+    // }, 10000);
+
+
+
 });
 
 
@@ -25,12 +45,14 @@ function gettoDaze(myArr) {
     .then(function(json) {
         for (let player of json) {
             playerCard(player);
-            myArr.push(player)
+            myArr.push(player);
         };
     });
 };
 
 function populateSelection(myArr, myNode) {
+    console.log("bea")
+
     for (const choice of myArr) {
         let option = document.createElement("option");
             option.value = choice;
@@ -39,32 +61,32 @@ function populateSelection(myArr, myNode) {
     };
 };
 
-function destroyCharacter(character_id) {
-    console.log(character_id);
+// function destroyCharacter(character_id) {
+//     console.log(character_id);
  
-    let formData = {
+//     let formData = {
 
-    };
+//     };
        
-    let configObj = {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify(formData)
-    };
+//     let configObj = {
+//         method: "DELETE",
+//         headers: {
+//           "Content-Type": "application/json",
+//           "Accept": "application/json"
+//         },
+//         body: JSON.stringify(formData)
+//     };
 
-    fetch(`http://localhost:3000/characters/${character_id}`, configObj)
-    .then(function(response) {
-        return response.json();
-    })
-    .then(function(json) {
-        let sacrifice = document.getElementsByClassName(`character ${json}`)[0];
-        sacrifice.remove();
-    });
+//     fetch(`http://localhost:3000/characters/${character_id}`, configObj)
+//     .then(function(response) {
+//         return response.json();
+//     })
+//     .then(function(json) {
+//         let sacrifice = document.getElementsByClassName(`character ${json}`)[0];
+//         sacrifice.remove();
+//     });
 
-};
+// };
 
 function playerCard(player) {
     let div = document.createElement("div");
@@ -73,24 +95,16 @@ function playerCard(player) {
         
     let p = document.createElement("p");
         p.textContent = player.name;
+        div.appendChild(p);
 
     let ul = document.createElement("ul");
+        div.appendChild(ul);
+
     for (let character of player.characters) {
-        let button = document.createElement("button");
-            button.textContent = "delete";
-            button.setAttribute("onclick", `destroyCharacter(${character.id})`);
-
-        let li = document.createElement("li");
-            li.textContent = `${character.name} ~ ${character.x_ancestry} ${character.x_class}`;
-            li.classList.add("character");
-            li.classList.add(`${character.id}`);
-            li.appendChild(button);
-
-        ul.appendChild(li);
+        let char = new Character(character);
+        char.characterCard(ul);
     };
 
-    div.appendChild(p);  
-    div.appendChild(ul);
     main.appendChild(div);
 };
 
@@ -119,14 +133,9 @@ let anceFunc = (myDom) => Array.from(myDom.getElementsByTagName("h2")).filter(he
 let backFunc = (myDom) => Array.from(myDom.getElementsByTagName("h1")).filter(heading => heading.className === "title").map(x => x.getElementsByTagName("a")[1]).filter(x => !!x);
 let clasFunc = (myDom) => Array.from(myDom.getElementsByTagName("h1")[1].getElementsByTagName("a")).filter(link => link.href.includes("?ID"));
 
-let ancestries = {};
-let backgrounds = {};
-let classes = {};
-let players = [];
-
-dommer(heroUrl, ancestriesUrl, listFiller, anceFunc, ancestries);
-dommer(heroUrl, backgroundsUrl, listFiller, backFunc, backgrounds);
-dommer(heroUrl, classesUrl, listFiller, clasFunc, classes);
+// dommer(heroUrl, ancestriesUrl, listFiller, anceFunc, ancestries);
+// dommer(heroUrl, backgroundsUrl, listFiller, backFunc, backgrounds);
+// dommer(heroUrl, classesUrl, listFiller, clasFunc, classes);
 
 // --------------------------------------------------
 
@@ -175,11 +184,11 @@ function addPlayer(name) {
 
 //
 
-let newCharacter = document.getElementById("new-character");
+// let newCharacter = document.getElementById("new-character");
 
-let clickCharacter = () => {
-    return addCharacter(newCharacter.value);
-};
+// let clickCharacter = () => {
+//     addCharacter(newCharacter.value);
+// };
 
 const wild = []
 
@@ -207,8 +216,9 @@ function addCharacter(name) {
     })
     .then(function(json) {
         wild.push(json);
-        let character = new Character(json);
-        character.characterCard()
+        let list = document.getElementsByClassName(`player ${json.player_id}`)[0].getElementsByTagName("ul")[0];
+        let char = new Character(json);
+        char.characterCard(list);
         // if (json.id) {
         //     playerCard(json);
         //     players.push(json);
