@@ -7,7 +7,7 @@ class Character {
 
         let button = document.createElement("button");
             button.textContent = "delete";
-            button.setAttribute("onclick", `destroyCharacter(${this.character.id})`);
+            button.setAttribute("onclick", `deleteCharacter(${this.character.id})`);
     
         let li = document.createElement("li");
             li.textContent = `${this.character.name} ~ ${this.character.x_ancestry} ${this.character.x_class}`;

@@ -1,4 +1,4 @@
-function destroyCharacter(character_id) {
+function deleteCharacter(character_id) {
     let char = new Character({id: character_id})
     char.destroyCharacter()
 };
