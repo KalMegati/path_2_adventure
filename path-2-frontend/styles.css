@@ -15,11 +15,11 @@ body {
   .left {
     left: 0;
     width: 33%;
-    background-color: #111;
   }
   
   .right {
     right: 0;
     width: 66%;
-    background-color: red;
+    border-style: solid;
+    border-color: cyan;
   }

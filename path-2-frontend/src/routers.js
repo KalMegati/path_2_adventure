@@ -1,6 +1,11 @@
+function displayCharacter(character_id) {
+    let char = new Character({id: character_id});
+    char.showCharacter();
+}
+
 function deleteCharacter(character_id) {
-    let char = new Character({id: character_id})
-    char.destroyCharacter()
+    let char = new Character({id: character_id});
+    char.destroyCharacter();
 };
 
 function clickCharacter() {

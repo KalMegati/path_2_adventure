@@ -18,6 +18,11 @@ class CharactersController < ApplicationController
 
     end
 
+    def show
+        character = Character.find(params[:id])
+        render json: character, include: :player
+    end
+
     def destroy
         character = Character.find(params[:id])
         character.destroy
