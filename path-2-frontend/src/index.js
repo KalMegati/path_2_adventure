@@ -14,7 +14,7 @@ let players = [];
 
 document.addEventListener("DOMContentLoaded", function() {
     
-    playerIndex(players);
+    Player.playerIndex(players);
 
     setTimeout(function(){ 
         populateSelection(players.map(player => player.name), document.getElementById("new-character-player"));

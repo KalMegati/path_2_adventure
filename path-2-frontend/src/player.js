@@ -4,6 +4,20 @@ class Player {
         this.player = player;
     };
 
+    static playerIndex(myArr) {
+        fetch(PLAYERS_URL)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(json) {
+            for (let player of json) {
+                let play = new Player(player)
+                play.playerCard();
+                myArr.push(play.player);
+            };
+        });
+    };
+
     playerCard() {
         let div = document.createElement("div");
             div.classList.add("player");
