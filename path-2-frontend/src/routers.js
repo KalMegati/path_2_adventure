@@ -3,7 +3,7 @@ function deleteCharacter(character_id) {
     char.destroyCharacter()
 };
 
-let clickCharacter = () => {
+function clickCharacter() {
     let char = new Character({
         name: document.getElementById("new-character").value,
         x_ancestry: document.getElementById("new-character-ancestry").value,
@@ -15,3 +15,10 @@ let clickCharacter = () => {
     char.addCharacter();
 };
 
+function clickPlayer() {
+    let play = new Player({
+        name: document.getElementById("new-player").value
+    })
+
+    play.addPlayer()
+}
