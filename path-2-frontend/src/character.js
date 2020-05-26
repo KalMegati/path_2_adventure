@@ -61,7 +61,6 @@ class Character {
             return response.json();
         })
         .then(function(json) {
-            wild.push(json);
             let list = document.getElementsByClassName(`player ${json.player_id}`)[0].getElementsByTagName("ul")[0];
             let char = new Character(json);
             char.characterCard(list);

@@ -44,8 +44,9 @@ function gettoDaze(myArr) {
     })
     .then(function(json) {
         for (let player of json) {
-            playerCard(player);
-            myArr.push(player);
+            let play = new Player(player)
+            play.playerCard();
+            myArr.push(play.player);
         };
     });
 };
@@ -88,25 +89,25 @@ function populateSelection(myArr, myNode) {
 
 // };
 
-function playerCard(player) {
-    let div = document.createElement("div");
-        div.classList.add("player");
-        div.classList.add(`${player.id}`);
+// function playerCard(player) {
+//     let div = document.createElement("div");
+//         div.classList.add("player");
+//         div.classList.add(`${player.id}`);
         
-    let p = document.createElement("p");
-        p.textContent = player.name;
-        div.appendChild(p);
+//     let p = document.createElement("p");
+//         p.textContent = player.name;
+//         div.appendChild(p);
 
-    let ul = document.createElement("ul");
-        div.appendChild(ul);
+//     let ul = document.createElement("ul");
+//         div.appendChild(ul);
 
-    for (let character of player.characters) {
-        let char = new Character(character);
-        char.characterCard(ul);
-    };
+//     for (let character of player.characters) {
+//         let char = new Character(character);
+//         char.characterCard(ul);
+//     };
 
-    main.appendChild(div);
-};
+//     main.appendChild(div);
+// };
 
 // returns ancestries, backgrounds, and classes as dict of option links
 
@@ -165,8 +166,9 @@ function addPlayer(name) {
     })
     .then(function(json) {
         if (json.id) {
-            playerCard(json);
-            players.push(json);
+            let play = new Player(json)
+            play.playerCard();
+            players.push(play.player);
 
             let option = document.createElement("option");
                 option.value = json.name;
